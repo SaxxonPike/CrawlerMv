@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachingRequester.cs" />
+    <Compile Include="Crawler.cs" />
+    <Compile Include="Decoder.cs" />
+    <Compile Include="Models\CrawledItem.cs" />
     <Compile Include="Models\SoundItem.cs" />
     <Compile Include="Models\CodeListItem.cs" />
     <Compile Include="Models\ConditionItem.cs" />
@@ -55,6 +59,7 @@
     <Compile Include="Models\MoveRouteItem.cs" />
     <Compile Include="PageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequesterExtensions.cs" />
     <Compile Include="WebResourceClient.cs">
       <SubType>Component</SubType>
     </Compile>

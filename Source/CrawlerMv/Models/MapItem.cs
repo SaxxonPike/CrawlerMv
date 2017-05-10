@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace CrawlerMv.Models
 {
@@ -32,7 +31,7 @@ namespace CrawlerMv.Models
         public string DisplayName { get; set; }
 
         [JsonProperty("encounterList")]
-        public List<JObject> EncounterList { get; set; }
+        public List<object> EncounterList { get; set; }
 
         [JsonProperty("encounterStep")]
         public int? EncounterStep { get; set; }

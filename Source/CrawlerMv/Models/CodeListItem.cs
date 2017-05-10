@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace CrawlerMv.Models
 {
@@ -10,7 +9,10 @@ namespace CrawlerMv.Models
         [JsonProperty("code")]
         public int? Code { get; set; }
 
+        [JsonProperty("indent")]
+        public int? Indent { get; set; }
+
         [JsonProperty("parameters")]
-        public List<JObject> Parameters { get; set; }
+        public List<object> Parameters { get; set; }
     }
 }
