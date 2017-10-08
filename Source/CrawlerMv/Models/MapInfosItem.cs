@@ -21,9 +21,9 @@ namespace CrawlerMv.Models
         public int? ParentId { get; set; }
 
         [JsonProperty("scrollX")]
-        public int? ScrollX { get; set; }
+        public float? ScrollX { get; set; }
 
         [JsonProperty("scrollY")]
-        public int? ScrollY { get; set; }
+        public float? ScrollY { get; set; }
     }
 }

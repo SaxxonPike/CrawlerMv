@@ -46,6 +46,7 @@
     <Compile Include="CachingRequester.cs" />
     <Compile Include="Crawler.cs" />
     <Compile Include="Decoder.cs" />
+    <Compile Include="FileRequester.cs" />
     <Compile Include="Models\CrawledItem.cs" />
     <Compile Include="Models\SoundItem.cs" />
     <Compile Include="Models\CodeListItem.cs" />
