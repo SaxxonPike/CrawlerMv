@@ -7,7 +7,7 @@ namespace CrawlerMv
 {
     public class Exporter
     {
-        public void Export(IEnumerable<CrawledItem> items, TextWriter writer)
+        public void Export(IEnumerable<CrawledItem> items, TextWriter writer, bool namedParameters)
         {
             var decoder = new Decoder();
             foreach (var map in items)
@@ -30,7 +30,7 @@ namespace CrawlerMv
                         writer.WriteLine($"        [Page {pageIndex}]");
                         foreach (var c in e.Pages[pageIndex].List)
                         {
-                            writer.WriteLine($"{string.Concat(decoder.Decode(c).Split('\n').Select(d => $"            {d}"))}");
+                            writer.WriteLine($"{string.Concat(decoder.Decode(c, namedParameters).Split('\n').Select(d => $"            {d}"))}");
                         }
                     }
                 }

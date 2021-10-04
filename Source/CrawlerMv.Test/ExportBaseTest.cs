@@ -5,7 +5,7 @@ namespace CrawlerMv.Test
 {
     public class ExportBaseTest
     {
-        protected void ExportLocal(string path, string filename)
+        protected void ExportLocal(string path, string filename, bool namedParameters)
         {
             var requester = new FileRequester(path);
             var crawler = new Crawler(requester);
@@ -15,13 +15,13 @@ namespace CrawlerMv.Test
             using (var mem = new MemoryStream())
             using (var textWriter = new StreamWriter(mem))
             {
-                exporter.Export(output, textWriter);
+                exporter.Export(output, textWriter, namedParameters);
                 File.WriteAllBytes(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename),
                     mem.ToArray());
             }
         }
 
-        protected void ExportWeb(string url, string filename)
+        protected void ExportWeb(string url, string filename, bool namedParameters)
         {
             var client = new WebResourceClient();
             var requester = new WebRequester(client, url);
@@ -33,7 +33,7 @@ namespace CrawlerMv.Test
             using (var mem = new MemoryStream())
             using (var textWriter = new StreamWriter(mem))
             {
-                exporter.Export(output, textWriter);
+                exporter.Export(output, textWriter, namedParameters);
                 File.WriteAllBytes(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename),
                     mem.ToArray());
             }

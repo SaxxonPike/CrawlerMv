@@ -18,7 +18,7 @@ namespace CrawlerMv.Test
              * came out, and the release runs on RenPy now. Nonetheless, this test is preserved. The online demo no
              * longer exists, but a local version does if you have Major\Minor Definitive Edition, see below.
              */
-            ExportWeb(url, filename);
+            ExportWeb(url, filename, false);
         }
         
         [Test]
@@ -29,7 +29,7 @@ namespace CrawlerMv.Test
             /*
              * If you have Major\Minor Definitive Edition installed, you can crawl the Winds of Change demo script.
              */
-            ExportLocal(path, filename);
+            ExportLocal(path, filename, false);
         }
     }
 }

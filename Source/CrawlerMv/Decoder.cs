@@ -34,24 +34,46 @@ namespace CrawlerMv
             { 401, "DLG         " },
             { 402, "DLG_CASE    " },
             { 404, "DLG_ENDSEL  " },
+            { 405, "CREDITS     " },
             { 408, "COMMENT     " },
             { 411, "ELSE        " },
             { 412, "ENDIF       " },
             { 655, "CMD         " }
         };
 
-        private static string DecodeParam(object param)
+        private static readonly Dictionary<int, string[]> KnownParameters = new Dictionary<int, string[]>
         {
-            if (param == null)
-                return "null";
+            { 111, new[] { "VarType", "Id", null, "Comparison", null } },
+            { 129, new[] { "Character", "Absent", null } },
+            { 201, new[] { null, "MapNumber", null, null, null, null } },
+            { 230, new[] { "Msec" } }
+        };
 
-            if (param is string)
-                return $"\"{param}\"";
+        private static string DecodeParam(object param, int code, int index, bool enable)
+        {
+            var prefix = string.Empty;
 
-            return param.ToString();
+            if (enable && KnownParameters.ContainsKey(code))
+            {
+                var parameters = KnownParameters[code];
+                if (index >= 0 && index < parameters.Length && parameters[index] != null)
+                {
+                    prefix = $"{parameters[index]}:";
+                }
+            }
+
+            switch (param)
+            {
+                case null:
+                    return $"{prefix}null";
+                case string s:
+                    return $"{prefix}\"{s.Replace("\"", "\\\"").Replace("\\!", "\\n")}\"";
+                default:
+                    return $"{prefix}{param}";
+            }
         }
 
-        public string Decode(CodeListItem item)
+        public string Decode(CodeListItem item, bool namedParameters)
         {
             if (item?.Code == null)
                 return string.Empty;
@@ -61,7 +83,8 @@ namespace CrawlerMv
                 : $"{item.Code:D12}";
 
             var param = item.Parameters != null && item.Parameters.Any()
-                ? string.Join(", ", item.Parameters.Select(DecodeParam))
+                ? string.Join(", ",
+                    item.Parameters.Select((p, i) => DecodeParam(p, item.Code.Value, i, namedParameters)))
                 : string.Empty;
 
             var indent = new string(' ', (item.Indent ?? 0) << 2);

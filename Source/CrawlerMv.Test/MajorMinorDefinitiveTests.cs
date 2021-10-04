@@ -16,7 +16,7 @@ namespace CrawlerMv.Test
              * This operates on the "definitive edition" but should also work on the original release of the game if
              * you change the testcase path. I don't remember what that is right now.
              */
-            ExportLocal(path, filename);
+            ExportLocal(path, filename, false);
         }
     }
 }
