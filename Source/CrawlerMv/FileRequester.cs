@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace CrawlerMv
 {
-    public class FileRequester : IWebResourceRequester
+    public class FileRequester : IRequester
     {
         private readonly string _folder;
 
@@ -16,14 +11,10 @@ namespace CrawlerMv
             _folder = folder;
         }
 
-        public byte[] RequestBytes(string url)
-        {
-            return File.ReadAllBytes(Path.Combine(_folder, url));
-        }
+        public byte[] RequestBytes(string url) => 
+            File.ReadAllBytes(Path.Combine(_folder, url));
 
-        public string RequestString(string url)
-        {
-            return File.ReadAllText(Path.Combine(_folder, url));
-        }
+        public string RequestString(string url) => 
+            File.ReadAllText(Path.Combine(_folder, url));
     }
 }

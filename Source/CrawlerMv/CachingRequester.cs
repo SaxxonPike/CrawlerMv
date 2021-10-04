@@ -3,14 +3,14 @@ using System.IO;
 
 namespace CrawlerMv
 {
-    public class CachingRequester : IWebResourceRequester
+    public class CachingRequester : IRequester
     {
-        private readonly IWebResourceRequester _webResourceRequester;
+        private readonly IRequester _requester;
         private readonly Lazy<string> _path;
 
-        public CachingRequester(IWebResourceRequester webResourceRequester)
+        public CachingRequester(IRequester requester)
         {
-            _webResourceRequester = webResourceRequester;
+            _requester = requester;
             _path = new Lazy<string>(() =>
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "crawler"));
         }
@@ -25,7 +25,7 @@ namespace CrawlerMv
             if (!Directory.Exists(actualDirectory))
                 Directory.CreateDirectory(actualDirectory);
 
-            var data = _webResourceRequester.RequestBytes(url);
+            var data = _requester.RequestBytes(url);
             File.WriteAllBytes(actualPath, data);
             return data;
         }
@@ -40,7 +40,7 @@ namespace CrawlerMv
             if (!Directory.Exists(actualDirectory))
                 Directory.CreateDirectory(actualDirectory);
 
-            var data = _webResourceRequester.RequestString(url);
+            var data = _requester.RequestString(url);
             File.WriteAllText(actualPath, data);
             return data;
         }

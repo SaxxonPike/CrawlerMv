@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using CrawlerMv.Models;
 using NUnit.Framework;
 
 namespace CrawlerMv.Test
@@ -10,52 +7,34 @@ namespace CrawlerMv.Test
     [TestFixture]
     public class WindsOfChangeTests
     {
-        private void Prettify(IEnumerable<CrawledItem> items, TextWriter writer)
-        {
-            var decoder = new Decoder();
-            foreach (var map in items)
-            {
-                if (map?.Map == null)
-                    continue;
-
-                writer.WriteLine($"[Map {map.MapInfo.Id}]");
-                foreach (var e in map.Map.Events.Where(ev => ev != null))
-                {
-                    if (e.Pages == null)
-                        continue;
-
-                    writer.WriteLine($"    [Event {e.Id}]");
-                    for (var pageIndex = 0; pageIndex < e.Pages.Count; pageIndex++)
-                    {
-                        if (e.Pages[pageIndex] == null)
-                            continue;
-
-                        writer.WriteLine($"        [Page {pageIndex}]");
-                        foreach (var c in e.Pages[pageIndex].List)
-                        {
-                            writer.WriteLine($"{string.Concat(decoder.Decode(c).Split('\n').Select(d => $"            {d}"))}");
-                        }
-                    }
-                }
-            }
-            writer.Flush();
-        }
-
         [Test]
-        public void Test1()
+        [TestCase("http://windsofchangegame.com/", "winds-of-change.txt")]
+        [Explicit("This makes web requests. Use at your own discretion.")]
+        public void Export_WindsOfChange_Web(string url, string filename)
         {
-            //var client = new WebResourceClient();
-            //var requester = new WebResourceRequester(client, "http://windsofchangegame.com/");
-            //var cachedRequester = new CachingRequester(requester);
-            var steamRequester = new FileRequester(@"C:\Program Files (x86)\Steam\steamapps\common\MajorMinorDefinitive\www");
-            var crawler = new Crawler(steamRequester);
+            /*
+             * Something you should know about this particular testcase: it was designed to crawl the Winds of Change
+             * demo located at http://windsofchangegame.com. The site hasn't existed for a couple years since the game
+             * came out, and the whole thing runs on RenPy now which makes this test worthless. Nonetheless, this test
+             * is preserved. The demo no longer exists.
+             *
+             * If you find an offline version of the Winds of Change demo, delete the first three lines and replace
+             * them with this one, replacing "path" with the local path your copy is located:
+             *
+             * var requester = new FileRequester(path);
+             */
+            var client = new WebResourceClient();
+            var requester = new WebRequester(client, url);
+            var cachedRequester = new CachingRequester(requester);
+            var crawler = new Crawler(cachedRequester);
             var output = crawler.Crawl();
+            var exporter = new Exporter();
 
             using (var mem = new MemoryStream())
             using (var textWriter = new StreamWriter(mem))
             {
-                Prettify(output, textWriter);
-                File.WriteAllBytes(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "output.txt"), mem.ToArray());
+                exporter.Export(output, textWriter);
+                File.WriteAllBytes(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename), mem.ToArray());
             }
         }
     }

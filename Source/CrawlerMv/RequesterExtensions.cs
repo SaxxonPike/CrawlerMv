@@ -6,7 +6,7 @@ namespace CrawlerMv
 {
     public static class RequesterExtensions
     {
-        public static TObject RequestJson<TObject>(this IWebResourceRequester requester, string url)
+        public static TObject RequestJson<TObject>(this IRequester requester, string url)
         {
             var deserializer = new JsonSerializer();
             var data = requester.RequestBytes(url);

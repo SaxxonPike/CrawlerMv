@@ -1,6 +1,6 @@
 ﻿namespace CrawlerMv
 {
-    public interface IWebResourceRequester
+    public interface IRequester
     {
         byte[] RequestBytes(string url);
         string RequestString(string url);

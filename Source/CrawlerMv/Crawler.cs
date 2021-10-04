@@ -6,21 +6,21 @@ namespace CrawlerMv
 {
     public class Crawler
     {
-        private readonly IWebResourceRequester _webResourceRequester;
+        private readonly IRequester _requester;
 
-        public Crawler(IWebResourceRequester webResourceRequester)
+        public Crawler(IRequester requester)
         {
-            _webResourceRequester = webResourceRequester;
+            _requester = requester;
         }
 
         public List<CrawledItem> Crawl()
         {
-            return _webResourceRequester.RequestJson<List<MapInfosItem>>("data/MapInfos.json")
+            return _requester.RequestJson<List<MapInfosItem>>("data/MapInfos.json")
                 .Select(mi => new CrawledItem
                 {
                     MapInfo = mi,
                     Map = mi?.Id != null && mi.Id.Value > 0
-                        ? _webResourceRequester.RequestJson<MapItem>($"data/Map{mi.Id:D3}.json")
+                        ? _requester.RequestJson<MapItem>($"data/Map{mi.Id:D3}.json")
                         : null
                 })
                 .ToList();
