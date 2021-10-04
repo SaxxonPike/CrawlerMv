@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace CrawlerMv.Test
 {
     [TestFixture]
-    public class WindsOfChangeTests
+    public class WindsOfChangeTests : ExportBaseTest
     {
         [Test]
         [TestCase("http://windsofchangegame.com/", "winds-of-change.txt")]
@@ -15,27 +15,21 @@ namespace CrawlerMv.Test
             /*
              * Something you should know about this particular testcase: it was designed to crawl the Winds of Change
              * demo located at http://windsofchangegame.com. The site hasn't existed for a couple years since the game
-             * came out, and the whole thing runs on RenPy now which makes this test worthless. Nonetheless, this test
-             * is preserved. The demo no longer exists.
-             *
-             * If you find an offline version of the Winds of Change demo, delete the first three lines and replace
-             * them with this one, replacing "path" with the local path your copy is located:
-             *
-             * var requester = new FileRequester(path);
+             * came out, and the release runs on RenPy now. Nonetheless, this test is preserved. The online demo no
+             * longer exists, but a local version does if you have Major\Minor Definitive Edition, see below.
              */
-            var client = new WebResourceClient();
-            var requester = new WebRequester(client, url);
-            var cachedRequester = new CachingRequester(requester);
-            var crawler = new Crawler(cachedRequester);
-            var output = crawler.Crawl();
-            var exporter = new Exporter();
-
-            using (var mem = new MemoryStream())
-            using (var textWriter = new StreamWriter(mem))
-            {
-                exporter.Export(output, textWriter);
-                File.WriteAllBytes(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename), mem.ToArray());
-            }
+            ExportWeb(url, filename);
+        }
+        
+        [Test]
+        [TestCase(@"C:\Program Files (x86)\Steam\steamapps\common\MajorMinorDefinitive\windsdemo\www", "winds-of-change-demo.txt")]
+        [Explicit("Assumes you have the game installed via Steam. Use at your own discretion.")]
+        public void Export_WindsOfChange_Local(string path, string filename)
+        {
+            /*
+             * If you have Major\Minor Definitive Edition installed, you can crawl the Winds of Change demo script.
+             */
+            ExportLocal(path, filename);
         }
     }
 }

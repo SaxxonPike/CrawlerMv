@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace CrawlerMv.Test
 {
     [TestFixture]
-    public class MajorMinorDefinitiveTests
+    public class MajorMinorDefinitiveTests : ExportBaseTest
     {
         [Test]
         [TestCase(@"C:\Program Files (x86)\Steam\steamapps\common\MajorMinorDefinitive\www", "major-minor-definitive.txt")]
@@ -13,19 +13,10 @@ namespace CrawlerMv.Test
         public void Export_MajorMinorDefinitive_Steam(string path, string filename)
         {
             /*
-             * This operates on the "definitive edition" but should also work on the original release of the game.
+             * This operates on the "definitive edition" but should also work on the original release of the game if
+             * you change the testcase path. I don't remember what that is right now.
              */
-            var requester = new FileRequester(path);
-            var crawler = new Crawler(requester);
-            var output = crawler.Crawl();
-            var exporter = new Exporter();
-
-            using (var mem = new MemoryStream())
-            using (var textWriter = new StreamWriter(mem))
-            {
-                exporter.Export(output, textWriter);
-                File.WriteAllBytes(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename), mem.ToArray());
-            }
+            ExportLocal(path, filename);
         }
     }
 }

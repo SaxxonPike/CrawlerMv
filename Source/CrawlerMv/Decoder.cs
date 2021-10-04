@@ -23,6 +23,7 @@ namespace CrawlerMv
             { 245, "BGS_PLAY    " },
             { 250, "SPK_PLAY    " },
             { 251, "SPK_STOP    " },
+            { 354, "MAIN_MENU   " },
             { 355, "CMD_START   " },
             { 356, "MSG         " },
             { 401, "DLG         " },
